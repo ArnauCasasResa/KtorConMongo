@@ -32,9 +32,13 @@ suspend fun main() {
         }
     }
 
-    client.post("http://127.0.0.1:8080/post") {
+   /* client.post("http://127.0.0.1:8080/words") {
         body = textoFiltrado
-    }
+    }*/
+    val usuario = "Arnau Arnau1234567890 https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fes%2Fimages%2Fsearch%2Fimagen%2F&psig=AOvVaw38E7d9_Dte8PwL7ZBXCnEI&ust=1716465087520000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCKiOxfCYoYYDFQAAAAAdAAAAABAE"
 
+    client.post("http://127.0.0.1:8080/clients") {
+        body = usuario
+    }
     client.close()
 }

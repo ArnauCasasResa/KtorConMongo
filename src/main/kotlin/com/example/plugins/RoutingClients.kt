@@ -19,16 +19,16 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-fun Application.rutaPalabras() {
+fun Application.rutaClientes() {
     routing {
-        post("/words") {
+        post("/clients") {
             val file= call.receive<String>()
-            connectionFiles(file)
+            val client=file.split(" ")
+            connectionClients(Client(client[0],client[1],client[2]))
         }
     }
 }
-
-fun connectionFiles(file: String) {
+fun connectionClients(client: Client) {
     val username = "arnaucasas7e7"
     // Replace the placeholders with your credentials and hostname
     val connectionString = "mongodb+srv://$username:$username@batalla.fspyxte.mongodb.net/?retryWrites=true&w=majority&appName=Batalla"
@@ -46,21 +46,25 @@ fun connectionFiles(file: String) {
     // Create a new client and connect to the server
     MongoClients.create(mongoClientSettings).use { mongoClient ->
         val database = mongoClient.getDatabase("batalla")
-        val collection = database.getCollection("ficheros")
+        val collection = database.getCollection("clientes")
 
         runBlocking {
             database.runCommand(Document("ping", 1))
         }
         println("Pinged your deployment. You successfully connected to MongoDB!")
 
-        subirFichero(collection, file)
+        subirCliente(collection, client)
 
     }
 }
 
 
-fun subirFichero(collection: MongoCollection<Document>, file: String) {
-    val document = Document("file", file)
-    collection.insertOne(document)
-    println("Inserted file into the 'palabras' collection.")
+fun subirCliente(collection: MongoCollection<Document>, client: Client) {
+    val clientJson = Json.encodeToString(client)
+    val clientDocument = Document.parse(clientJson)
+    collection.insertOne(clientDocument)
+    println("Inserted client into the 'clients' collection.")
 }
+
+@Serializable
+class Client(val name: String, val password: String, val urlPFP: String)
