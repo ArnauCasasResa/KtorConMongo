@@ -1,6 +1,7 @@
 package com.example
 
-import com.example.plugins.configureRouting
+import com.example.plugins.rutaClientes
+import com.example.plugins.rutaPalabras
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -8,5 +9,6 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureRouting()
+    rutaPalabras()
+    rutaClientes()
 }
