@@ -7,22 +7,28 @@ import com.mongodb.ServerApiVersion
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.Serializable
 import org.bson.Document
+import org.bson.types.Binary
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 
 fun Application.configureRouting() {
     routing {
         post("/post") {
-            connection()
+            val file= call.receive<String>()
+            connection(file)
         }
     }
 }
 
-fun connection() {
+fun connection(file: String) {
     val username = "arnaucasas7e7"
     // Replace the placeholders with your credentials and hostname
     val connectionString = "mongodb+srv://$username:$username@batalla.fspyxte.mongodb.net/?retryWrites=true&w=majority&appName=Batalla"
@@ -40,35 +46,21 @@ fun connection() {
     // Create a new client and connect to the server
     MongoClients.create(mongoClientSettings).use { mongoClient ->
         val database = mongoClient.getDatabase("batalla")
-        val collection = database.getCollection("palabras")
+        val collection = database.getCollection("ficheros")
 
         runBlocking {
             database.runCommand(Document("ping", 1))
         }
         println("Pinged your deployment. You successfully connected to MongoDB!")
 
-
-        insertarPalabras(collection)
+        subirFichero(collection, file)
 
     }
 }
-fun insertarPalabras(collection: MongoCollection<Document>) {
 
 
-    val json = Json { ignoreUnknownKeys = true }
-
-    val palabra= Palabra("caracola","ola")
-
-    runBlocking {
-        val listaPalabras = mutableListOf<Document>()
-        val jsonText = json.encodeToString(palabra)
-        val document = Document.parse(jsonText)
-        listaPalabras.add(document)
-        collection.insertOne(document)
-    }
-
-    println("Inserted two students into the 'grades' collection.")
+fun subirFichero(collection: MongoCollection<Document>, file: String) {
+    val document = Document("file", file)
+    collection.insertOne(document)
+    println("Inserted file into the 'palabras' collection.")
 }
-
-@Serializable
-class Palabra(val palabra: String, val rima: String)
