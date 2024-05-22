@@ -24,7 +24,7 @@ fun Application.rutaClientes() {
         post("/clients") {
             val file= call.receive<String>()
             val client=file.split(" ")
-            connectionClients(Client(client[0],client[1],client[2]))
+            connectionClients(Client(client[0],client[1],client[2],client[3].toInt()))
         }
     }
 }
@@ -67,4 +67,4 @@ fun subirCliente(collection: MongoCollection<Document>, client: Client) {
 }
 
 @Serializable
-class Client(val name: String, val password: String, val urlPFP: String)
+class Client(val name: String, val password: String, val urlPFP: String,val puntuacion: Int)
