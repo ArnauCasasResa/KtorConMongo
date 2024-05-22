@@ -46,10 +46,13 @@ fun connectionFiles(file: String) {
     // Create a new client and connect to the server
     MongoClients.create(mongoClientSettings).use { mongoClient ->
         val database = mongoClient.getDatabase("batalla")
+
         val collection = database.getCollection("ficheros")
+        collection.drop()
 
         runBlocking {
             database.runCommand(Document("ping", 1))
+
         }
         println("Pinged your deployment. You successfully connected to MongoDB!")
 
