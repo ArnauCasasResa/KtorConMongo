@@ -75,7 +75,7 @@ fun tratarTexto(texto: String): String {
     val unidades = "(IX|IV|V?I{0,4})"
 
     // Expresión regular completa uniendo las partes
-    val regexRomanos = "\\b$miles$centenas$decenas$unidades\\b".toLowerCase().toRegex()
+    val regexRomanos = "\\b$miles$centenas$decenas$unidades\\b".lowercase().toRegex()
     val regexPalabrasConNumeros = "\\b\\w*\\d+\\w*\\b".toRegex()
 
     //Aplicamos las expreciones regulares
@@ -85,6 +85,8 @@ fun tratarTexto(texto: String): String {
     //Eliminamos palabras repetidas
     val palabras = textoFinal.split("\\s+".toRegex())
     textoFinal = palabras.toCollection(LinkedHashSet()).joinToString(" ")
+    textoFinal = textoFinal.replace("- ", " ")
+
 
     return textoFinal
 }
