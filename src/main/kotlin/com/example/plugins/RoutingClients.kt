@@ -24,7 +24,9 @@ fun Application.rutaClientes() {
         post("/clients") {
             val file= call.receive<String>()
             val client=file.split(" ")
-            connectionClients(Client(client[0],client[1],client[2],client[3].toInt()))
+            println(file)
+            var cliente=Client(client[0],client[1],client[2],client[3].toInt())
+            connectionClients(cliente)
         }
     }
 }
