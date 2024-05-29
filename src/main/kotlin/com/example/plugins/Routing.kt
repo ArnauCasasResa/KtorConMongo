@@ -19,51 +19,9 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-fun Application.rutaPalabras() {
+fun Application.rutingApi() {
     routing {
-        post("/words") {
-            val file= call.receive<String>()
-            connectionFiles(file)
-        }
+       rutaClientes()
+        rutaWords()
     }
-}
-
-fun connectionFiles(file: String) {
-    val username = "arnaucasas7e7"
-    // Replace the placeholders with your credentials and hostname
-    val connectionString = "mongodb+srv://$username:$username@batalla.fspyxte.mongodb.net/?retryWrites=true&w=majority&appName=Batalla"
-
-
-    val serverApi = ServerApi.builder()
-        .version(ServerApiVersion.V1)
-        .build()
-
-    val mongoClientSettings = MongoClientSettings.builder()
-        .applyConnectionString(ConnectionString(connectionString))
-        .serverApi(serverApi)
-        .build()
-
-    // Create a new client and connect to the server
-    MongoClients.create(mongoClientSettings).use { mongoClient ->
-        val database = mongoClient.getDatabase("batalla")
-
-        val collection = database.getCollection("ficheros")
-        collection.drop()
-
-        runBlocking {
-            database.runCommand(Document("ping", 1))
-
-        }
-        println("Pinged your deployment. You successfully connected to MongoDB!")
-
-        subirFichero(collection, file)
-
-    }
-}
-
-
-fun subirFichero(collection: MongoCollection<Document>, file: String) {
-    val document = Document("file", file)
-    collection.insertOne(document)
-    println("Inserted file into the 'palabras' collection.")
 }

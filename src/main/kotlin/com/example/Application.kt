@@ -1,7 +1,6 @@
 package com.example
 
-import com.example.plugins.rutaClientes
-import com.example.plugins.rutaPalabras
+import com.example.plugins.rutingApi
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -9,6 +8,5 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    rutaPalabras()
-    rutaClientes()
+    rutingApi()
 }
