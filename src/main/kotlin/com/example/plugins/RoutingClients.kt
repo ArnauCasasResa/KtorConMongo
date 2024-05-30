@@ -31,13 +31,11 @@ fun Route.rutaClientes() {
             }
         }
         post("/addPuntuacion"){
-            val info = call.receive<Pair<String,Int>>() //"name password" + puntuacion
-            val user = info.first.split(" ")
-            val name = user[0]
-            val pasword = user[1]
+            val info = call.receive<Pair<String,Int>>() //"name" + puntuacion
+            val name = info.first
             val puntuacion = info.second
 
-            val docChanges = editarPuntuacion(name, pasword, puntuacion)
+            val docChanges = editarPuntuacion(name, puntuacion)
             call.respondText("Documentos actualizados: $docChanges", status = HttpStatusCode.OK)
         }
 

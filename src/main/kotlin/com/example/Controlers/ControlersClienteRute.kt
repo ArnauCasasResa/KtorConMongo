@@ -89,8 +89,6 @@ fun clientes(): List<Client>{
             // Deserializar el JSON a una instancia de Fichero
             try {
                 val client = jsonSerializer.decodeFromString<Client>(json)
-
-
                 users.add(client)
             } catch (e: SerializationException) {
                 println("Error de deserialización: ${e.message}")
@@ -102,7 +100,7 @@ fun clientes(): List<Client>{
     return users
 }
 
-fun editarPuntuacion(name: String, password: String, puntuacion: Int): Long{
+fun editarPuntuacion(name: String, puntuacion: Int): Long{
 
     val username = "arnaucasas7e7"
     val uri = "mongodb+srv://$username:$username@batalla.fspyxte.mongodb.net/?retryWrites=true&w=majority&appName=Batalla"
@@ -115,8 +113,7 @@ fun editarPuntuacion(name: String, password: String, puntuacion: Int): Long{
 
     // Define el filtro para encontrar el documento que quieres actualizar
     val filter = Filters.and(
-        Filters.eq("name", name),
-        Filters.eq("password", password)
+        Filters.eq("name", name)
     )
 
     // Define la actualización que quieres hacer (incrementar el valor de un campo)
