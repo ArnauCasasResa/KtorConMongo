@@ -6,6 +6,7 @@ import com.mongodb.ConnectionString
 import com.mongodb.MongoClientSettings
 import com.mongodb.ServerApi
 import com.mongodb.ServerApiVersion
+import com.mongodb.client.MongoClient
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoCursor
@@ -35,7 +36,8 @@ fun connectionClients(client: Client) {
         .build()
 
     // Create a new client and connect to the server
-    MongoClients.create(mongoClientSettings).use { mongoClient ->
+    val mongoClients = MongoClients.create(mongoClientSettings)
+    mongoClients.use { mongoClient ->
         val database = mongoClient.getDatabase("batalla")
         val collection = database.getCollection("clientes")
 
@@ -47,6 +49,8 @@ fun connectionClients(client: Client) {
         subirCliente(collection, client)
 
     }
+    mongoClients.close()
+
 }
 
 
