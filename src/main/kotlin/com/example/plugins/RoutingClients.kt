@@ -16,8 +16,8 @@ fun Route.rutaClientes() {
         post() {
             val file= call.receive<String>()
             val client=file.split(" ")
-            println(file)
-            var cliente=Client(null,client[0],client[1],client[2].toInt())
+            var cliente=Client(client[0],client[1],client[2].toInt())
+
             connectionClients(cliente)
         }
         get("/all"){
@@ -31,11 +31,10 @@ fun Route.rutaClientes() {
             }
         }
         post("/addPuntuacion"){
-            val info = call.receive<Pair<String,Int>>() //"name" + puntuacion
-            val name = info.first
-            val puntuacion = info.second
+            val info = call.receive<String>() //"name" + puntuacion
+            val infoTodo = info.split(" ")
 
-            val docChanges = editarPuntuacion(name, puntuacion)
+            val docChanges = editarPuntuacion(infoTodo[0], infoTodo[1].toInt())
             call.respondText("Documentos actualizados: $docChanges", status = HttpStatusCode.OK)
         }
 
