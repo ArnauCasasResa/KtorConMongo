@@ -7,6 +7,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 
 fun Route.rutaClientes() {
     route("/clients") {
@@ -22,7 +24,8 @@ fun Route.rutaClientes() {
             val allUsers = clientes()
 
             if (allUsers.isNotEmpty()) {
-                call.respond(allUsers)
+                val jsonList = Json.encodeToString(ListSerializer(Client.serializer()), allUsers as List<Client>)
+                call.respond(jsonList)
             } else {
                 call.respondText("No hay nada!", status = HttpStatusCode.OK)
             }

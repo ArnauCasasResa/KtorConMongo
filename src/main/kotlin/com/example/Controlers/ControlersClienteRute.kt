@@ -15,6 +15,7 @@ import com.mongodb.client.model.Updates
 import com.mongodb.client.result.UpdateResult
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.bson.Document
@@ -88,6 +89,8 @@ fun clientes(): List<Client>{
             // Deserializar el JSON a una instancia de Fichero
             try {
                 val client = jsonSerializer.decodeFromString<Client>(json)
+
+
                 users.add(client)
             } catch (e: SerializationException) {
                 println("Error de deserialización: ${e.message}")
